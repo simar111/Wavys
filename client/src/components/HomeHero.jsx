@@ -1,67 +1,86 @@
 import { motion, useMotionValue, animate } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
-  // Animation values
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const floatingY = useMotionValue(0);
   const textOpacity = useMotionValue(0);
   const textY = useMotionValue(20);
-  
+  const bgScale = useMotionValue(1);
+  const bgPosition = useMotionValue('50%');
+
   useEffect(() => {
-    // Floating animation
-    animate(floatingY, [0, -20, 0], {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const position = windowWidth < 640 ? '25%' : 
+                   windowWidth < 768 ? '30%' : 
+                   'center';
+    
+    animate(bgPosition, position, {
+      duration: 0.8,
+      ease: 'easeOut'
+    });
+
+    const scale = windowWidth < 768 ? 1.05 : 1.02;
+    animate(bgScale, scale, {
+      duration: 0.8,
+      ease: 'easeOut'
+    });
+
+    animate(floatingY, [0, -15, 0], {
       duration: 15,
       repeat: Infinity,
       repeatType: 'mirror',
       ease: 'easeInOut'
     });
 
-    // Text reveal animation
-    animate(textOpacity, 1, {
-      duration: 1.2,
-      ease: [0.16, 1, 0.3, 1]
-    });
-    animate(textY, 0, {
-      duration: 1,
-      ease: [0.16, 1, 0.3, 1]
-    });
-  }, []);
+    animate(textOpacity, 1, { duration: 1.2, ease: [0.16, 1, 0.3, 1] });
+    animate(textY, 0, { duration: 1, ease: [0.16, 1, 0.3, 1] });
+  }, [windowWidth]);
 
   return (
-    <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-neutral-950">
-      {/* Dynamic background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Animated gradient mesh */}
-        <div className="absolute inset-0 opacity-30">
-          <svg className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <radialGradient id="gradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#1e40af" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#gradient)" />
-          </svg>
-        </div>
+    <section className="relative overflow-hidden min-h-[90vh] md:min-h-screen flex items-center justify-center">
+      <motion.div 
+        className="absolute inset-0 bg-cover brightness-75" // Added brightness-75 for darker background
+        style={{
+          backgroundImage: `url(${"./Images/Hero1.png"})`,
+          scale: bgScale,
+          backgroundPositionX: bgPosition,
+          backgroundPositionY: 'center',
+          zIndex: -1
+        }}
+      >
+        <div className={`absolute inset-0 ${
+          windowWidth < 768 ? 'bg-neutral-950/10' : 
+          'bg-gradient-to-t from-neutral-950/40 via-neutral-950/20 to-transparent'
+        }`}></div>
+      </motion.div>
 
-        {/* Floating particles */}
-        {[...Array(20)].map((_, i) => (
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(windowWidth < 768 ? 12 : 24)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-blue-500/10"
+            className="absolute rounded-full bg-blue-400/15 backdrop-blur-[1px]"
             style={{
-              width: Math.random() * 10 + 2,
-              height: Math.random() * 10 + 2,
+              width: windowWidth < 768 ? Math.random() * 3 + 1 : Math.random() * 5 + 2,
+              height: windowWidth < 768 ? Math.random() * 3 + 1 : Math.random() * 5 + 2,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               y: floatingY,
             }}
             animate={{
-              opacity: [0.2, 0.5, 0.2],
-              scale: [1, 1.5, 1]
+              opacity: [0.05, 0.2, 0.05],
+              scale: [1, 1.3, 1]
             }}
             transition={{
-              duration: Math.random() * 10 + 10,
+              duration: Math.random() * 15 + 10,
               repeat: Infinity,
               repeatType: 'reverse',
               ease: 'easeInOut',
@@ -71,119 +90,108 @@ const HeroSection = () => {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Animated content */}
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8 py-12 md:py-24 relative z-10">
+        <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto text-center">
           <motion.div
             style={{
               opacity: textOpacity,
               y: textY
             }}
+            className="px-4"
           >
-            {/* Premium badge */}
             <motion.div
-              className="inline-flex items-center justify-center mb-8"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.6, ease: 'backOut' }}
+              className="inline-flex items-center justify-center mb-5 md:mb-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="text-sm font-medium tracking-[0.2em] text-blue-400 uppercase">
-                WAVYS COLLECTION
-              </span>
+              <div className="relative">
+                <span className="text-[0.65rem] sm:text-xs md:text-sm font-bold tracking-[0.15em] md:tracking-[0.2em] text-blue-300/90 uppercase inline-block">
+                  WAVY'S SIGNATURE
+                </span>
+                <motion.span 
+                  className="absolute top-0 left-0 w-6 h-full bg-white/30"
+                  initial={{ x: -30 }}
+                  animate={{ x: '180%' }}
+                  transition={{
+                    delay: 1.2,
+                    duration: 1.8,
+                    repeat: Infinity,
+                    repeatDelay: 4
+                  }}
+                  style={{
+                    transform: 'skewX(-25deg)'
+                  }}
+                />
+              </div>
             </motion.div>
 
-            {/* Hero headline with dynamic gradient */}
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight mb-8 font-poppins"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 1 }}
+              className="text-[3rem] leading-[1.1] sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem] font-extrabold mb-5 md:mb-8 font-poppins"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-300 to-blue-200">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-blue-100 to-blue-50 drop-shadow-lg">
                 ELEVATED
               </span>
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
-                ESSENTIALS
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-200 drop-shadow-lg">
+                ESSENCE
               </span>
             </motion.h1>
 
-            {/* Animated divider */}
             <motion.div
-              className="w-24 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-400 to-blue-500/0 mx-auto mb-8"
+              className={`w-20 sm:w-24 md:w-28 h-px bg-gradient-to-r from-transparent via-blue-300/80 to-transparent mx-auto mb-6 md:mb-8`}
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ delay: 0.6, duration: 1.2, ease: 'circOut' }}
+              transition={{ delay: 0.6, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             />
 
-            {/* Subheading */}
             <motion.p
-              className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto font-light font-poppins"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100/90 mb-8 sm:mb-10 md:mb-12 max-w-md sm:max-w-lg md:max-w-xl mx-auto font-semibold font-poppins tracking-wide leading-tight"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
+              transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              Redefining modern sophistication through minimalist design and premium craftsmanship
+              Where contemporary design meets<br className="xs:hidden" /> uncompromising quality in every stitch
             </motion.p>
 
-            {/* CTA buttons */}
             <motion.div
-              className="flex flex-wrap gap-6 justify-center"
+              className="flex flex-col xs:flex-row gap-3 sm:gap-4 justify-center items-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.6 }}
+              transition={{ delay: 1, duration: 0.8 }}
             >
               <motion.button
                 whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: '0 10px 30px -5px rgba(59, 130, 246, 0.4)',
-                  backgroundColor: '#3b82f6'
+                  scale: 1.03,
+                  boxShadow: '0 8px 32px -4px rgba(59, 130, 246, 0.4)'
                 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400 }}
-                className="px-10 py-4 bg-blue-500 text-white font-medium rounded-full transition-all text-lg"
+                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                className="px-6 sm:px-7 md:px-8 py-3 bg-blue-600/95 hover:bg-blue-600 text-white font-medium rounded-full transition-all text-sm sm:text-base md:text-[0.95rem] relative overflow-hidden group"
               >
-                Discover Collection
+                <span className="relative z-10">Discover Collection</span>
+                <motion.span 
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500/40 to-blue-400/40 opacity-0 group-hover:opacity-100"
+                  initial={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
               </motion.button>
+              
               <motion.button
                 whileHover={{ 
-                  scale: 1.05,
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                  scale: 1.03,
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  borderColor: 'rgba(255, 255, 255, 0.6)'
                 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 400 }}
-                className="px-10 py-4 bg-transparent border border-gray-600 text-white font-medium rounded-full transition-all text-lg"
+                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                className="px-6 sm:px-7 md:px-8 py-3 bg-white/5 border border-gray-400/50 hover:border-gray-300 text-white font-medium rounded-full transition-all text-sm sm:text-base md:text-[0.95rem]"
               >
                 Explore Lookbook
               </motion.button>
-            </motion.div>
-
-            {/* Floating indicator */}
-            <motion.div
-              className="mt-24"
-              style={{ y: floatingY }}
-              animate={{
-                opacity: [0.6, 1, 0.6],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-            >
-              <svg 
-                className="w-8 h-12 mx-auto text-blue-400" 
-                fill="none" 
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
             </motion.div>
           </motion.div>
         </div>

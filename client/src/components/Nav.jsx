@@ -1,80 +1,85 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
-  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/shop' },
-    { name: 'Collections', path: '/collections' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  const navItems = ['Shop', 'About', 'Contact'];
 
   // Animation variants
-  const logoVariants = {
-    initial: { opacity: 0, y: -20 },
-    animate: { 
-      opacity: 1, 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
       y: 0,
-      transition: { 
-        type: 'spring', 
+      opacity: 1,
+      transition: {
+        type: 'spring',
         stiffness: 300,
         damping: 20
       }
     }
   };
 
-  const navItemVariants = {
-    hover: {
-      y: -3,
-      transition: { type: 'spring', stiffness: 500 }
-    },
-    tap: { scale: 0.95 }
+  const hoverEffect = {
+    scale: 1.05,
+    transition: { type: 'spring', stiffness: 400, damping: 10 }
   };
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, ease: [0.6, 0.05, -0.01, 0.9] }}
       className={`fixed w-full z-50 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
-          : 'bg-white/90 py-5'
-      } transition-all duration-500 border-b border-gray-100`}
+        scrolled
+          ? 'bg-black bg-opacity-90 backdrop-blur-md py-3 shadow-xl'
+          : 'bg-transparent py-5'
+      } transition-all duration-300`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* Animated Logo */}
+      <div className="container mx-auto px-6">
+        <motion.div 
+          className="flex justify-between items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Logo with animated dot */}
           <motion.div
-            variants={logoVariants}
-            initial="initial"
-            animate="animate"
+            variants={itemVariants}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center"
           >
-            <Link to="/" className="flex items-center">
-              <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+            <Link to="/" className="flex items-center group">
+              <span className="text-white text-3xl font-bold tracking-tighter group-hover:text-blue-400 transition-colors duration-300">
                 WAVYS
               </span>
-              <motion.div
-                className="ml-2 h-2 w-2 rounded-full bg-blue-400"
+              <motion.span
+                className="ml-2 h-2 w-2 bg-blue-500 rounded-full"
                 animate={{
-                  scale: [1, 1.2, 1],
+                  scale: [1, 1.3, 1],
                   opacity: [0.8, 1, 0.8],
-                  backgroundColor: ['#60a5fa', '#3b82f6', '#60a5fa']
+                  backgroundColor: ['#3B82F6', '#60A5FA', '#3B82F6']
                 }}
                 transition={{
                   duration: 2,
@@ -85,64 +90,70 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          {/* Desktop Navigation with hover effects */}
+          <motion.div 
+            className="hidden md:flex space-x-8"
+            variants={containerVariants}
+          >
             {navItems.map((item) => (
               <motion.div
-                key={item.path}
-                className="relative px-1"
-                onHoverStart={() => setHoveredLink(item.path)}
+                key={item}
+                variants={itemVariants}
+                onHoverStart={() => setHoveredLink(item)}
                 onHoverEnd={() => setHoveredLink(null)}
-                variants={navItemVariants}
-                whileHover="hover"
-                whileTap="tap"
+                className="relative"
               >
                 <Link
-                  to={item.path}
-                  className={`relative px-4 py-2 text-lg font-medium ${
-                    location.pathname === item.path
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-500'
-                  } transition-colors duration-300`}
+                  to={`/${item.toLowerCase()}`}
+                  className="text-white font-medium uppercase tracking-wider text-sm relative"
                 >
-                  {item.name}
-                  {(hoveredLink === item.path || location.pathname === item.path) && (
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400"
-                      layoutId="navHighlight"
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    />
-                  )}
+                  <motion.span
+                    animate={{
+                      color: hoveredLink === item ? '#60A5FA' : '#FFFFFF'
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item}
+                  </motion.span>
+                  <motion.div
+                    className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400"
+                    initial={{ scaleX: 0 }}
+                    animate={{
+                      scaleX: hoveredLink === item ? 1 : 0,
+                      backgroundColor: hoveredLink === item ? '#60A5FA' : '#3B82F6'
+                    }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  />
                 </Link>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Mobile Menu Button */}
+          {/* Animated Mobile Menu Button */}
           <motion.button
+            variants={itemVariants}
+            whileHover={hoverEffect}
             whileTap={{ scale: 0.9 }}
-            className="lg:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+            className="md:hidden text-white"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
           >
-            <svg className="w-7 h-7 text-gray-700" fill="none" viewBox="0 0 24 24">
-              <motion.path
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </svg>
+            {mobileOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </motion.button>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Animated Mobile Menu */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{
@@ -161,18 +172,18 @@ const Navbar = () => {
                 height: { duration: 0.2 }
               }
             }}
-            className="lg:hidden bg-white/95 backdrop-blur-md overflow-hidden border-t border-gray-100"
+            className="md:hidden bg-black bg-opacity-95 backdrop-blur-sm overflow-hidden"
           >
             <motion.div 
-              className="flex flex-col py-4 px-4 space-y-2"
+              className="px-2 pt-2 pb-4 space-y-2"
               initial="closed"
               animate="open"
               exit="closed"
             >
-              {navItems.map((item, index) => (
+              {['Home', ...navItems].map((item, index) => (
                 <motion.div
-                  key={item.path}
-                  initial={{ x: -20, opacity: 0 }}
+                  key={item}
+                  initial={{ x: -50, opacity: 0 }}
                   animate={{
                     x: 0,
                     opacity: 1,
@@ -182,18 +193,18 @@ const Navbar = () => {
                       stiffness: 300
                     }
                   }}
-                  exit={{ x: -20, opacity: 0 }}
+                  exit={{
+                    x: -50,
+                    opacity: 0,
+                    transition: { duration: 0.1 }
+                  }}
                 >
                   <Link
-                    to={item.path}
-                    className={`block px-4 py-3 text-lg font-medium rounded-lg transition-colors ${
-                      location.pathname === item.path
-                        ? 'bg-blue-50 text-blue-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-blue-500'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    to={`/${item.toLowerCase()}`}
+                    className="block px-4 py-3 text-white text-lg font-medium hover:bg-gray-900 rounded-lg transition-colors"
+                    onClick={() => setMobileOpen(false)}
                   >
-                    {item.name}
+                    {item}
                   </Link>
                 </motion.div>
               ))}
