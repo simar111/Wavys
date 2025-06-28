@@ -64,31 +64,53 @@ const Navbar = () => {
           animate="visible"
         >
           {/* Logo with animated dot */}
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center"
-          >
-            <Link to="/" className="flex items-center group">
-              <span className="text-white text-3xl font-bold tracking-tighter group-hover:text-blue-400 transition-colors duration-300">
-                WAVYS
-              </span>
-              <motion.span
-                className="ml-2 h-2 w-2 bg-blue-500 rounded-full"
-                animate={{
-                  scale: [1, 1.3, 1],
-                  opacity: [0.8, 1, 0.8],
-                  backgroundColor: ['#3B82F6', '#60A5FA', '#3B82F6']
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </Link>
-          </motion.div>
+        <motion.div
+  variants={itemVariants}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className="flex items-center"
+>
+  <Link to="/" className="flex items-center group">
+    {/* Logo Image with Animation */}
+    <motion.div
+      className="relative"
+      whileHover={{ rotate: [0, -5, 5, 0] }}
+      transition={{ duration: 0.6 }}
+    >
+      {/* Main Logo Image */}
+      <img 
+        src="./images/Logo2.png" 
+        alt="Wavys Logo"
+        className="h-10 w-auto" // Adjust size as needed
+      />
+      
+      {/* Animated Dot (kept from original design) */}
+      <motion.span
+        className="absolute -right-2 -top-1 h-2 w-2 bg-blue-500 rounded-full"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.8, 1, 0.8],
+          backgroundColor: ['#3B82F6', '#60A5FA', '#3B82F6']
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+    </motion.div>
+    
+    {/* Optional Text Logo - can be removed if your image includes text */}
+    {/* <motion.span 
+      className="ml-2 text-white text-3xl font-bold tracking-tighter group-hover:text-blue-400 transition-colors duration-300"
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.2 }}
+    >
+      WAVYS
+    </motion.span> */}
+  </Link>
+</motion.div>
 
           {/* Desktop Navigation with hover effects */}
           <motion.div 

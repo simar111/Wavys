@@ -1,10 +1,12 @@
 import Footer from "../components/Footer";
 import HeroSection from "../components/HomeHero";
+import ProductShowcase from "../components/ProductsShow";
 
 export default function Home(){
     return(
         <>
         <HeroSection />
+        <ProductShowcase />
         <Footer />
         </>
     )
