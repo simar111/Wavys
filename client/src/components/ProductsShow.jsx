@@ -11,7 +11,7 @@ const UltraPremiumShowcase = () => {
       price: "₹2,499",
       originalPrice: "₹3,199",
       discount: "22% OFF",
-      image: "/images/nebula-tee.webp",
+      image: "./Images/T1.jpg",
       colors: ["#0F172A", "#1E293B", "#334155"],
       badge: "LIMITED EDITION",
       rating: 4.9,
