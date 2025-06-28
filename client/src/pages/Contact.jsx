@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiTwitter, FiFacebook } from "react-icons/fi";
+import Footer from "../components/Footer";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -300,27 +301,7 @@ const ContactUs = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black py-12 border-t border-gray-800">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="text-2xl font-bold mb-4 font-poppins">WAVYS</div>
-            
-            <div className="flex justify-center space-x-6 mb-6">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
-            </div>
-            
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} Wavys. All Rights Reserved.
-            </p>
-          </motion.div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 };
