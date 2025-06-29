@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiTwitter, FiFacebook } from "react-icons/fi";
 import Footer from "../components/Footer";
+import ContactHero from "../components/ContactHero";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -56,6 +57,7 @@ const ContactUs = () => {
 
   return (
     <>
+    <ContactHero />
       <Helmet>
         <title>Contact Us - Wavys</title>
         <meta name="description" content="Contact Wavys for inquiries about premium men's T-shirts and apparel." />
