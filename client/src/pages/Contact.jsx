@@ -66,9 +66,9 @@ const ContactUs = () => {
       {/* Navigation */}
       {/* 
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-black to-blue-900 overflow-hidden">
+      {/* <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-black to-blue-900 overflow-hidden"> */}
         {/* Particle Background */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* <div className="absolute inset-0 overflow-hidden">
           {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
@@ -133,7 +133,7 @@ const ContactUs = () => {
             </motion.div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Contact Form Section */}
       <section className="py-20 bg-black">

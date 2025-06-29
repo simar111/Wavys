@@ -145,7 +145,7 @@ const ContactHero = () => {
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-6">
             <motion.div
               whileHover={{ scale: 1.03, boxShadow: "0 15px 40px -10px rgba(59, 130, 246, 0.5)" }}
-              className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-200 w-full sm:w-80 h-64 flex items-center justify-center"
+              className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-200 w-full sm:w-80  flex items-center justify-center h-24"
             >
               <p className="text-gray-800 text-center font-medium">
                 Fill out our quick form or call us at{" "}
@@ -157,7 +157,7 @@ const ContactHero = () => {
                 whileHover={{ scale: 1.1, boxShadow: "0 12px 30px -8px rgba(59, 130, 246, 0.6)" }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all duration-300"
+                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all duration-300 h-24"
               >
                 Get in Touch
               </motion.button>
@@ -165,7 +165,7 @@ const ContactHero = () => {
                 whileHover={{ scale: 1.1, borderColor: "#3B82F6", color: "#3B82F6" }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                className="px-8 py-4 border-2 border-gray-300 hover:border-blue-600 text-gray-800 font-semibold rounded-lg shadow-sm transition-all duration-300"
+                className="px-8 py-4 border-2 border-gray-300 hover:border-blue-600 text-gray-800 font-semibold rounded-lg shadow-sm transition-all duration-300 h-24"
               >
                 View Support
               </motion.button>
