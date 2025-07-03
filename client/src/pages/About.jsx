@@ -60,50 +60,97 @@ const AboutUs = () => {
     <div className="bg-gray-50 text-[#1A1A1A] font-poppins">
       {/* Hero Section */}
       <section
-        ref={heroRef}
-        className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100"
-        style={{ filter: 'none' }} // Explicitly prevent blur
-      >
-        {/* Wave Background */}
-        <div
-          className="absolute bottom-0 left-0 w-[200%] h-64 bg-repeat-x bg-[length:50%_100%]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231E90FF' fill-opacity='0.1' d='M0,256L48,261.3C96,267,192,277,288,250.7C384,224,480,160,576,160C672,160,768,224,864,218.7C960,213,1056,139,1152,117.3C1248,96,1344,128,1392,144L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`,
-          }}
-        ></div>
+  ref={heroRef}
+  className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+  style={{ filter: 'none' }}
+>
+  {/* Modern grid background */}
+  <div className="absolute inset-0 opacity-20">
+    <div className="absolute inset-0 bg-[length:100px_100px] bg-[linear-gradient(to_right,rgba(30,144,255,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(30,144,255,0.3)_1px,transparent_1px)]"></div>
+  </div>
 
-        {/* Floating particles (reduced to 5 for performance) */}
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-[#1E90FF] opacity-10"
-            style={{
-              width: `${Math.random() * 20 + 10}px`,
-              height: `${Math.random() * 20 + 10}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              willChange: 'transform', // Optimize animation performance
-              animation: `float ${Math.random() * 5 + 5}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          ></div>
-        ))}
+  {/* Animated blue grid lines */}
+  <div className="absolute inset-0 overflow-hidden">
+    {[...Array(4)].map((_, i) => (
+      <div
+        key={i}
+        className="absolute border-l border-r border-[#1E90FF] opacity-10 h-full"
+        style={{
+          left: `${(i + 1) * 25}%`,
+          animation: `pulse ${Math.random() * 3 + 2}s ease-in-out infinite alternate`,
+          animationDelay: `${i * 0.5}s`
+        }}
+      ></div>
+    ))}
+  </div>
 
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-8">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1E90FF] to-[#00BFFF]">
-              Wavys: Ride the Wave of Style
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-gray-700">
-            At Wavys, we believe fashion isn't just about what you wear—it's a reflection of your energy, your attitude, and your lifestyle. We're here to ride the wave of change and bring you bold, unique styles that move with you, wherever life takes you.
-          </p>
-          <button className="bg-gradient-to-r from-[#1E90FF] to-[#00BFFF] text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 hover:shadow-[0_0_15px_rgba(30,144,255,0.5)] transition-all duration-300">
-            Explore Our Collection
-          </button>
-        </div>
-      </section>
+  {/* Floating abstract shapes (modern approach) */}
+  {[...Array(3)].map((_, i) => (
+    <div
+      key={i}
+      className="absolute rounded-full mix-blend-overlay"
+      style={{
+        background: `radial-gradient(circle, rgba(30,144,255,0.${Math.floor(Math.random() * 3) + 2}) 0%, transparent 70%)`,
+        width: `${Math.random() * 300 + 100}px`,
+        height: `${Math.random() * 300 + 100}px`,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        willChange: 'transform',
+        animation: `float ${Math.random() * 10 + 10}s ease-in-out infinite both`,
+        animationDelay: `${Math.random() * 5}s`,
+      }}
+    ></div>
+  ))}
 
+  {/* Modern wave effect at bottom */}
+  <div className="absolute bottom-0 left-0 w-full h-32 overflow-hidden">
+    <div className="absolute bottom-0 left-0 w-[200%] h-full bg-repeat-x bg-[length:50%_100%] opacity-30"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231E90FF' d='M0,256L48,261.3C96,267,192,277,288,250.7C384,224,480,160,576,160C672,160,768,224,864,218.7C960,213,1056,139,1152,117.3C1248,96,1344,128,1392,144L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`,
+        animation: 'wave 15s linear infinite'
+      }}>
+    </div>
+  </div>
+
+  <div className="container mx-auto px-6 text-center relative z-10">
+    <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-8">
+      <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#1E90FF] via-[#00BFFF] to-[#1E90FF] animate-text-shimmer">
+        Wavys: Ride the Wave of Style
+      </span>
+    </h1>
+    <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-gray-300">
+      At Wavys, we believe fashion isn't just about what you wear—it's a reflection of your energy, your attitude, and your lifestyle. We're here to ride the wave of change and bring you bold, unique styles that move with you, wherever life takes you.
+    </p>
+    <button className="relative overflow-hidden group bg-transparent border-2 border-[#1E90FF] text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-[#1E90FF] transition-all duration-300 hover:shadow-[0_0_20px_rgba(30,144,255,0.7)]">
+      <span className="relative z-10">Explore Our Collection</span>
+      <span className="absolute inset-0 bg-gradient-to-r from-[#1E90FF] to-[#00BFFF] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+    </button>
+  </div>
+
+  {/* Add these to your global CSS */}
+  <style jsx>{`
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) rotate(${Math.random() * 2 - 1}deg); }
+    }
+    @keyframes pulse {
+      0% { opacity: 0.05; }
+      100% { opacity: 0.15; }
+    }
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes text-shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .animate-text-shimmer {
+      background-size: 300% 300%;
+      animation: text-shimmer 6s ease infinite;
+    }
+  `}</style>
+</section>
       {/* Our Story */}
       <section ref={addToRefs} className="py-20 bg-white">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
